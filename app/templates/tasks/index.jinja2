@@ -1,0 +1,188 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+Edit Task
+{% endblock title %}
+
+{% block styles %}
+{{ super() }}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+{% endblock styles %}
+
+
+
+{% block body %}
+
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-dark">My Tasks</h2>
+            <button class="btn btn-primary" onclick="window.location.href='{{ url_for('TaskRoute.create')}}'">New
+                Task</button>
+        </div>
+        <ul class="nav nav-tabs mb-4" id="taskTabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#allTasks" data-bs-toggle="tab">All</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#todayTasks" data-bs-toggle="tab">Today</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#thisWeekTasks" data-bs-toggle="tab">This week</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#assignedTasks" data-bs-toggle="tab">Assigned to you</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="allTasks">
+                <div class="list-group">
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">Complete task</div>
+                                <small class="text-muted">Due: Sep 1, 2023</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">Another task</div>
+                                <small class="text-muted">Due: Sep 10, 2023</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="todayTasks">
+                <div class="list-group">
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">Task for Today</div>
+                                <small class="text-muted">Due: Today</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="thisWeekTasks">
+                <div class="list-group">
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">Task for This Week</div>
+                                <small class="text-muted">Due: This week</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="assignedTasks">
+                <div class="list-group">
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="checkbox" value="">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">Assigned Task</div>
+                                <small class="text-muted">Due: Assigned</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton5"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
+                                <li><a class="dropdown-item" href="#">Edit</a></li>
+                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <footer class="mt-4">
+            <p class="text-center text-muted">© 2024 My Tasks. All rights reserved.</p>
+        </footer>
+    </div>
+    {% endblock body %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock scripts %}
