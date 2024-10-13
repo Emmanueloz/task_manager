@@ -1,7 +1,7 @@
 from app.db.base_model import BaseModel
 from sqlalchemy import Column, String
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField
+from wtforms import StringField, EmailField, PasswordField
 from wtforms.validators import DataRequired, Email
 
 
@@ -15,10 +15,10 @@ class User(BaseModel):
 
 class LoginForm(FlaskForm):
     email = EmailField('Correo', validators=[DataRequired(), Email()])
-    password = StringField('Contraseña', validators=[DataRequired()])
+    password = PasswordField('Contraseña', validators=[DataRequired()])
 
 
 class RegisterForm(FlaskForm):
     username = StringField('Nombre de usuario', validators=[DataRequired()])
     email = EmailField('Correo', validators=[DataRequired(), Email()])
-    password = StringField('Contraseña', validators=[DataRequired()])
+    password = PasswordField('Contraseña', validators=[DataRequired()])
