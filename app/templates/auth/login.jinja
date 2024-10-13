@@ -1,8 +1,24 @@
 {% extends "base.jinja" %} {% block title %} Login {% endblock title %}
 
 {% block body %}
-<div class="container">
-    <h1>Login</h1>
-
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+    <form class="col-12 col-md-10 col-lg-6 col-xl-4 p-4 p-lg-5  border border-secondary rounded-5" method="post">
+        {{ form.csrf_token}}
+        <h2 class="text-center fs-4">Iniciar sesión</h2>
+        <div class="mb-3">
+            {{form.email.label(class="form-label")}}
+            {{ form.email(class="form-control",value=form.email.data, placeholder="ejemplo@gmail.com") }}
+        </div>
+        <div class="mb-3">
+            {{form.password.label(class="form-label")}}
+            {{ form.password(class="form-control") }}
+        </div>
+        <a href="/register" class="">Registrarse</a>
+        <div class="d-flex mt-3 justify-content-between">
+            <a href="/" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Aceptar</button>
+        </div>
+    </form>
 </div>
+
 {% endblock body %}
