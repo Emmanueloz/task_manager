@@ -18,4 +18,7 @@ login_manager.login_message_category = 'info'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(user_id)
+    user = User.query.get(user_id)
+    if user is None:
+        return
+    return UserLogin(user)
