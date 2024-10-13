@@ -16,3 +16,9 @@ class User(BaseModel):
 class LoginForm(FlaskForm):
     email = EmailField('Correo', validators=[DataRequired(), Email()])
     password = StringField('Contraseña', validators=[DataRequired()])
+
+
+class RegisterForm(FlaskForm):
+    username = StringField('Nombre de usuario', validators=[DataRequired()])
+    email = EmailField('Correo', validators=[DataRequired(), Email()])
+    password = StringField('Contraseña', validators=[DataRequired()])

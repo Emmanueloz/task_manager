@@ -1,27 +1,30 @@
 
 from flask import Blueprint, render_template, redirect
-from app.features.auth.model import LoginForm
+from app.features.auth.model import LoginForm, RegisterForm
 
 auth = Blueprint('auth', __name__)
 
 
 @auth.get('/login/')
 def login():
-    form: LoginForm = LoginForm()
     context = {
-        "form": form
+        "form": LoginForm()
     }
     return render_template('auth/login.jinja', **context)
 
 
 @auth.post('/login/')
 def login_post():
+
     return redirect("/")
 
 
 @auth.get('/register/')
 def register():
-    return render_template('auth/register.jinja')
+    context = {
+        "form": RegisterForm()
+    }
+    return render_template('auth/register.jinja', **context)
 
 
 @auth.post('/register/')

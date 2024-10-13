@@ -1,4 +1,4 @@
-{% extends "base.jinja" %} {% block title %} Login {% endblock title %}
+{% extends "base.jinja" %} {% block title %} Iniciar sesión {% endblock title %}
 
 {% block body %}
 <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
@@ -7,7 +7,8 @@
         <h2 class="text-center fs-4">Iniciar sesión</h2>
         <div class="mb-3">
             {{form.email.label(class="form-label")}}
-            {{ form.email(class="form-control",value=form.email.data, placeholder="ejemplo@gmail.com") }}
+            {{ form.email(class="form-control",value=form.email.data if form.email.data else "",
+            placeholder="ejemplo@gmail.com") }}
         </div>
         <div class="mb-3">
             {{form.password.label(class="form-label")}}
@@ -16,7 +17,7 @@
         <a href="/register" class="">Registrarse</a>
         <div class="d-flex mt-3 justify-content-between">
             <a href="/" class="btn btn-outline-secondary">Cancelar</a>
-            <button type="submit" class="btn btn-primary">Aceptar</button>
+            <button type="submit" class="btn btn-primary">Iniciar</button>
         </div>
     </form>
 </div>
