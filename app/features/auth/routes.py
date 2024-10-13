@@ -1,6 +1,6 @@
 
 from flask import Blueprint, render_template, redirect
-from app.features.auth.model import LoginForm, RegisterForm
+from app.features.auth.form import LoginForm, RegisterForm
 
 auth = Blueprint('auth', __name__)
 

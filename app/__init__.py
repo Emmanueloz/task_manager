@@ -9,6 +9,9 @@ def create_app():
     from app.db import db
     db.init_app(app)
 
+    from app.features.auth import login_manager
+    login_manager.init_app(app)
+
     from app.features.dashboard import dashboard
     app.register_blueprint(dashboard)
 
