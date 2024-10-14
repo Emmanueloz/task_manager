@@ -1,6 +1,1 @@
-from flask import Blueprint
-
-
-events_bp = Blueprint('events', __name__)
-
-from . import routes  # Importa las rutas
+from .routes import events_bp  # Importa las rutas
