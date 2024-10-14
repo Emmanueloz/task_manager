@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Nota</title>
+</head>
+<body>
+    <h1>Editar Nota</h1>
+    
+    <form action="{{ url_for('notes.actualizar_nota', id=nota.id) }}" method="POST">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" value="{{ nota.titulo }}" required>
+        
+        <label for="contenido">Contenido:</label>
+        <textarea id="contenido" name="contenido" required>{{ nota.contenido }}</textarea>
+        
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+    <a href="{{ url_for('notes.notes_list') }}">Volver a la lista de notas</a>
+</body>
+</html>

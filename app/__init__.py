@@ -15,6 +15,9 @@ def create_app():
     from app.features.auth import auth
     app.register_blueprint(auth)
 
+    from app.features.notes import notes
+    app.register_blueprint(notes) 
+
     with app.app_context():
         db.create_all()
     return app

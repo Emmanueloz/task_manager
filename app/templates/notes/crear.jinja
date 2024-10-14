@@ -1,0 +1,11 @@
+<!-- notes/crear.jinja -->
+<h1>Crear Nota</h1>
+<form action="/notes/create" method="POST">
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo" name="titulo" required>
+    
+    <label for="contenido">Contenido:</label>
+    <textarea id="contenido" name="contenido" required></textarea>
+    
+    <button type="submit">Crear Nota</button>
+</form>
