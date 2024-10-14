@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for, flash
 from .models import Evento
 from .forms import EventoForm
 from app.db import db
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 events_bp = Blueprint('events', __name__)
@@ -11,7 +11,7 @@ events_bp = Blueprint('events', __name__)
 @events_bp.route('/events', methods=['GET'])
 @login_required
 def list_events():
-    eventos = Evento.query.all()
+    eventos = Evento.query.filter_by(usuario_id=current_user.id).all()
     return render_template('events/list_events.jinja', eventos=eventos)
 
 
@@ -24,7 +24,8 @@ def create_event():
             titulo=form.titulo.data,
             descripcion=form.descripcion.data,
             fecha=form.fecha.data,
-            hora=form.hora.data
+            hora=form.hora.data,
+            usuario_id=current_user.id
         )
         db.session.add(nuevo_evento)
         db.session.commit()
@@ -38,7 +39,7 @@ def create_event():
 @events_bp.route('/event/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_event(id):
-    evento = Evento.query.filter_by(id=id).first()
+    evento = Evento.query.filter_by(id=id, usuario_id=current_user.id).first()
     if not evento:
         flash('Evento no encontrado.', 'danger')
         return redirect(url_for('events.list_events'))
@@ -61,7 +62,10 @@ def edit_event(id):
 @events_bp.route('/event/delete/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_event(id):
-    evento = Evento.query.get_or_404(id)
+    evento = Evento.query.filter_by(id=id, usuario_id=current_user.id).first()
+    if not evento:
+        flash('Evento no encontrado.', 'danger')
+        return redirect(url_for('events.list_events'))
 
     if request.method == 'POST':
         db.session.delete(evento)

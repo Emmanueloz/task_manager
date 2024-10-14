@@ -11,8 +11,8 @@ auth = Blueprint('auth', __name__)
 
 @auth.get('/login/')
 def login():
-    for user in User.query.all():
-        print(f"-{user.email}-")
+    if current_user.is_authenticated:
+        return redirect("/")
     context = {
         "form": LoginForm()
     }
@@ -21,6 +21,9 @@ def login():
 
 @auth.post('/login/')
 def login_post():
+    if current_user.is_authenticated:
+        return redirect("/")
+
     form: LoginForm = LoginForm()
 
     if not form.validate_on_submit():
@@ -53,6 +56,8 @@ def register():
 
 @auth.post('/register/')
 def register_post():
+    if current_user.is_authenticated:
+        return redirect("/")
     form: RegisterForm = RegisterForm()
     if not form.validate_on_submit():
 
