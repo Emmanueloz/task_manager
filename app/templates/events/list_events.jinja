@@ -1,0 +1,37 @@
+{% extends 'base.jinja' %}
+
+{% block body %}
+    <h1>Lista de Eventos</h1>
+
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="{{ url_for('events.create_event') }}" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">+ Agregar Evento</a>
+    </div>
+
+    <div>
+        {% for evento in eventos %}
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 10px;">
+                <h3>Evento: {{ evento.titulo }}</h3>
+                <div style="display: flex; align-items: center;">
+                    <div style="display: flex; align-items: center; margin-right: 15px;">
+                        <img src="{{ url_for('static', filename='') }}" alt="📅" style="width: 24px; height: 24px; margin-right: 5px;">
+                        <span>Fecha: {{ evento.fecha }}</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <img src="{{ url_for('static', filename='') }}" alt="⌚" style="width: 24px; height: 24px; margin-right: 5px;">
+                        <span>Hora: {{ evento.hora }}</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 10px;">
+                    <p>Descripción: {{ evento.descripcion | truncate(100) }}</p>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <a href="{{ url_for('events.edit_event', id=evento.id) }}" style="padding: 5px 15px; background-color: #f0ad4e; color: white; text-decoration: none; border-radius: 5px;">Editar</a>
+
+                    <a href="{{ url_for('events.delete_event', id=evento.id) }}" style="padding: 5px 15px; background-color: #d9534f; color: white; text-decoration: none; border-radius: 5px;">Eliminar</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
