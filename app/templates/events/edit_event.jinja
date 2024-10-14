@@ -1,0 +1,53 @@
+{% extends 'base.jinja' %}
+
+{% block title %}Editar Evento{% endblock %}
+
+{% block body %}
+<div class="container mt-5 p-4 rounded bg-white shadow">
+    <h2 class="mb-4 text-center">Editar Evento</h2>
+    <form method="POST" action="{{ url_for('events.edit_event', id=evento.id) }}">
+        {{ form.hidden_tag() }}  
+
+        <div class="form-group mb-3">
+            <label for="titulo">Título del evento</label>
+            {{ form.titulo(class="form-control", placeholder="Ingresa el título del evento", value=evento.titulo, required=True) }}
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="descripcion">Descripción del evento</label>
+            {{ form.descripcion(class="form-control", placeholder="Ingresa una descripción del evento", rows=3, value=evento.descripcion, required=True) }}
+        </div>
+
+        <div class="form-group mb-3 d-flex align-items-center">
+            <label for="fecha" class="form-label me-2">
+                <img src="{{ url_for('static', filename='') }}" alt="📅" class="icon me-2">
+            </label>
+            {{ form.fecha(class="form-control", value=evento.fecha.strftime('%Y-%m-%d'), required=True) }}  <!-- Usar el campo de formulario -->
+        </div>
+
+        <div class="form-group mb-3 d-flex align-items-center">
+            <label for="hora" class="form-label me-2">
+                <img src="{{ url_for('static', filename='') }}" alt="⌚" class="icon me-2">
+            </label>
+            {{ form.hora(class="form-control", value=evento.hora.strftime('%H:%M'), required=True) }}  <!-- Usar el campo de formulario -->
+        </div>
+
+        <div class="form-group mb-3 text-center">
+            <button type="submit" class="btn btn-primary me-3">Guardar Cambios</button>
+            <a href="{{ url_for('events.list_events') }}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    input[type="text"], input[type="date"], input[type="time"], textarea {
+        width: 100%;
+    }
+
+    .text-center {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+</style>
+{% endblock %}
