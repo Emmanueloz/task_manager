@@ -1,113 +1,41 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Nota</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+{% extends "base.jinja" %}
 
-        .form-container {
-            background-color: #7cdaf9; /* Fondo celeste */
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+{% block title %}Crear Nota{% endblock title %}
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h1 class="text-center mb-4">Crear Nueva Nota</h1>
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('notes.guardar_note') }}">
+                        {{ form.hidden_tag() }}
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+                        <!-- Campo para el Título -->
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            {{ form.titulo(class_='form-control', placeholder='Escribe el título de tu nota') }}
+                        </div>
 
-        label {
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
-            width: 100%;
-        }
+                        <!-- Campo para el Contenido -->
+                        <div class="form-group">
+                            <label for="contenido">Contenido</label>
+                            {{ form.contenido(class_='form-control', placeholder='Escribe el contenido de tu nota') }}
+                        </div>
 
-        input[type="text"],
-        textarea {
-            width: 100%; /* Ocupa el 100% del contenedor */
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            resize: vertical;
-            height: 100px;
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        button {
-            width: 48%;
-            background-color: #0288d1;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #0277bd;
-        }
-
-        .cancel-button {
-            background-color: #e57373;
-        }
-
-        .cancel-button:hover {
-            background-color: #d32f2f;
-        }
-    </style>
-</head>
-<body>
-
-<div class="form-container">
-    <h1>Crear Nota</h1>
-    <form action="/notes/create" method="POST">
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Escribe el título de tu nota" required>
-
-        <label for="contenido">Contenido:</label>
-        <textarea id="contenido" name="contenido" placeholder="Escribe el contenido de tu nota" required></textarea>
-
-        <div class="button-container">
-            <button type="submit">Crear Nota</button>
-            <button type="button" class="cancel-button" onclick="window.location.href='/notes';">Cancelar</button>
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <!-- Botón de Guardar -->
+                            {{ form.submit(class_='btn btn-primary') }}
+                            
+                            <!-- Botón de Cancelar -->
+                            <a href="{{ url_for('notes.notes_list') }}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-    </form>
+    </div>
 </div>
-
-</body>
-</html>
+{% endblock body %}
