@@ -1,9 +1,92 @@
-{% extends "base.jinja" %} {% block title %} Task Manager {% endblock title %}
+{% extends "base.jinja" %}
+
+{% block title %} Task Manager {% endblock title %}
 
 {% block body %}
+<style>
+  .rounded-card {
+    border-radius: 20px; /* Ajusta el valor para obtener la ovalidad deseada */
+  }
+</style>
 
 <div class="container">
-  <h1>Task Manager</h1>
+
+  <div class="row">
+    <!-- Card 1: Próximos Eventos -->
+    <div class="col-md-6">
+      <div class="card rounded-card">
+        <div class="card-header">
+          Próximos Eventos
+        </div>
+        <div class="card-body">
+          {% for evento in eventos %}
+          <h5 class="card-title">{{ evento.titulo }}</h5>
+          <p class="card-text">{{ evento.descripcion }}</p>
+         <a href="{{ url_for('events.list_events') }}" class="btn btn-primary">Ver más</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Tareas Pendientes -->
+    <div class="col-md-6">
+      <div class="card rounded-card">
+        <div class="card-header">
+          Tareas Pendientes
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Tarea 1</h5>
+          <p class="card-text">Descripción de la tarea pendiente.</p>
+          <a href="#" class="btn btn-primary">Completar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Notas Recientes con contenedor de más cards -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card rounded-card">
+        <div class="card-header">
+          Notas Recientes
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!-- Sub-card 1 -->
+            <div class="col-md-4">
+              <div class="card mb-3 rounded-card">
+                <div class="card-body">
+                  <h5 class="card-title">Nota 1</h5>
+                  <p class="card-text">Descripción de la primera nota.</p>
+                  <a href="#" class="btn btn-secondary">Leer más</a>
+                </div>
+              </div>
+            </div>
+            <!-- Sub-card 2 -->
+            <div class="col-md-4">
+              <div class="card mb-3 rounded-card">
+                <div class="card-body">
+                  <h5 class="card-title">Nota 2</h5>
+                  <p class="card-text">Descripción de la segunda nota.</p>
+                  <a href="#" class="btn btn-secondary">Leer más</a>
+                </div>
+              </div>
+            </div>
+            <!-- Sub-card 3 -->
+            <div class="col-md-4">
+              <div class="card mb-3 rounded-card">
+                <div class="card-body">
+                  <h5 class="card-title">Nota 3</h5>
+                  <p class="card-text">Descripción de la tercera nota.</p>
+                  <a href="#" class="btn btn-secondary">Leer más</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 {% endblock body %}
