@@ -15,7 +15,7 @@
                         <!-- Campo para el Título -->
                         <div class="form-group">
                             <label for="titulo">Título</label>
-                            {{ form.titulo(class_='form-control', value=nota.titulo) }}
+                            {{ form.titulo(class_='form-control') }}
                             {% if form.titulo.errors %}
                                 <div class="text-danger">
                                     {% for error in form.titulo.errors %}
@@ -28,7 +28,7 @@
                         <!-- Campo para el Contenido -->
                         <div class="form-group">
                             <label for="contenido">Contenido</label>
-                            {{ form.contenido(class_='form-control', value=nota.contenido) }}
+                            {{ form.contenido(class_='form-control') }}
                             {% if form.contenido.errors %}
                                 <div class="text-danger">
                                     {% for error in form.contenido.errors %}
