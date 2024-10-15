@@ -21,7 +21,8 @@ def create_note():
 def guardar_note():
     form = NotaForm() 
     if form.validate_on_submit():
-        nueva_nota = Nota(titulo=form.titulo.data, contenido=form.contenido.data)
+        id_1 = 10
+        nueva_nota = Nota(id=id_1, titulo=form.titulo.data, contenido=form.contenido.data)
         db.session.add(nueva_nota)
         db.session.commit()
         return redirect(url_for('notes.notes_list'))
