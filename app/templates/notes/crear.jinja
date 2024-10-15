@@ -16,16 +16,30 @@
                         <div class="form-group">
                             <label for="titulo">Título</label>
                             {{ form.titulo(class_='form-control', placeholder='Escribe el título de tu nota') }}
+                            {% if form.titulo.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.titulo.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <!-- Campo para el Contenido -->
                         <div class="form-group">
                             <label for="contenido">Contenido</label>
                             {{ form.contenido(class_='form-control', placeholder='Escribe el contenido de tu nota') }}
+                            {% if form.contenido.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.contenido.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <!-- Botones -->
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-between mt-4">
                             <!-- Botón de Guardar -->
                             {{ form.submit(class_='btn btn-primary') }}
                             
