@@ -1,185 +1,164 @@
 {% extends "base.jinja" %}
 
 {% block title %}
-Edit Task
+Mis Tareas
 {% endblock title %}
 
 {% block styles %}
 {{ super() }}
-<!-- Bootstrap CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
 {% endblock styles %}
-
-
 
 {% block body %}
 
 <body class="bg-light">
     <div class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-dark">My Tasks</h2>
-            <button class="btn btn-primary" onclick="window.location.href='{{ url_for('TaskRoute.create')}}'">New
-                Task</button>
+            <h2 class="text-dark">Mis Tareas</h2>
+            <button class="btn btn-primary" onclick="window.location.href='{{ url_for('TaskRoute.create') }}'">Nueva
+                Tarea</button>
         </div>
         <ul class="nav nav-tabs mb-4" id="taskTabs">
             <li class="nav-item">
-                <a class="nav-link active" href="#allTasks" data-bs-toggle="tab">All</a>
+                <a class="nav-link {% if filtro == 'todos' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='todos') }}">Todos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#todayTasks" data-bs-toggle="tab">Today</a>
+                <a class="nav-link {% if filtro == 'completados' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='completados') }}">Completadas</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#thisWeekTasks" data-bs-toggle="tab">This week</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#assignedTasks" data-bs-toggle="tab">Assigned to you</a>
+                <a class="nav-link {% if filtro == 'sin_completar' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='sin_completar') }}">Sin Completar</a>
             </li>
         </ul>
+
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="allTasks">
                 <div class="list-group">
+                    {% for task in all_tasks %}
                     <div
                         class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
                         <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
                             <div class="d-flex flex-column">
-                                <div class="fw-bold">Complete task</div>
-                                <small class="text-muted">Due: Sep 1, 2023</small>
+                                <div class="fw-bold">{{ task.nombre }}
+                                    {% if task.prioridad == 'alta' %}
+                                    <span class="badge bg-danger">Alta</span>
+                                    {% elif task.prioridad == 'media' %}
+                                    <span class="badge bg-warning text-dark">Media</span>
+                                    {% elif task.prioridad == 'baja' %}
+                                    <span class="badge bg-success">Baja</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
                             </div>
                         </div>
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                Options
+                                Opciones
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('TaskRoute.edit', task_id=task.id) }}">Editar</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('TaskRoute.get_eliminar', id=task.id) }}">Eliminar</a></li>
                             </ul>
                         </div>
                     </div>
-                    <div
-                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
-                        <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <div class="d-flex flex-column">
-                                <div class="fw-bold">Another task</div>
-                                <small class="text-muted">Due: Sep 10, 2023</small>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="todayTasks">
+            <!--es la seccion de Completadas -->
+            <div class="tab-pane fade" id="completedTasks">
                 <div class="list-group">
+                    {% for task in all_tasks if task.completada %}
                     <div
                         class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
                         <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
                             <div class="d-flex flex-column">
-                                <div class="fw-bold">Task for Today</div>
-                                <small class="text-muted">Due: Today</small>
+                                <div class="fw-bold">{{ task.nombre }}</div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
                             </div>
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton3"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                            </ul>
-                        </div>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="thisWeekTasks">
+            <!--seccion de  No Completadas -->
+            <div class="tab-pane fade" id="uncompletedTasks">
                 <div class="list-group">
+                    {% for task in all_tasks if not task.completada %}
                     <div
                         class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
                         <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" value="">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
                             <div class="d-flex flex-column">
-                                <div class="fw-bold">Task for This Week</div>
-                                <small class="text-muted">Due: This week</small>
+                                <div class="fw-bold">{{ task.nombre }}</div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
                             </div>
                         </div>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton4"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                            </ul>
-                        </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="assignedTasks">
-                <div class="list-group">
-                    <div
-                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
-                        <div class="form-check me-3">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <div class="d-flex flex-column">
-                                <div class="fw-bold">Assigned Task</div>
-                                <small class="text-muted">Due: Assigned</small>
-                            </div>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton5"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Options
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton5">
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
 
-        <!-- Pagination -->
+        <!-- Pagination para cada secion -->
+        {% if tasks_page %}
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
+                {% if tasks_page.has_prev %}
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
+                    <a class="page-link"
+                        href="{{ url_for('TaskRoute.index', page=tasks_page.prev_num, filtro=filtro) }}"
+                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+
+                {% for num in tasks_page.iter_pages() %}
+                <li class="page-item {% if num == tasks_page.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('TaskRoute.index', page=num, filtro=filtro) }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if tasks_page.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
+                    <a class="page-link"
+                        href="{{ url_for('TaskRoute.index', page=tasks_page.next_num, filtro=filtro) }}"
+                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
             </ul>
         </nav>
 
-        <footer class="mt-4">
-            <p class="text-center text-muted">© 2024 My Tasks. All rights reserved.</p>
-        </footer>
+        {% endif %}
     </div>
     {% endblock body %}
 
