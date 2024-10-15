@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app.features.notes.model import Nota
 from app.db import db
 
@@ -47,7 +47,6 @@ def actualizar_nota(id):
     nota.contenido = request.form.get('contenido')
     
     db.session.commit()
-    flash('Nota actualizada con éxito.')
     return redirect(url_for('notes.notes_list'))
 
 
@@ -56,6 +55,5 @@ def eliminar_nota(id):
     nota = Nota.query.get_or_404(id)
     db.session.delete(nota)
     db.session.commit()
-    flash('Nota eliminada con éxito.')
     return redirect(url_for('notes.notes_list'))
 

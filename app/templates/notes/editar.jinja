@@ -4,20 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Nota</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: #b3e5fc; /* Fondo celeste */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        button {
+            width: 48%;
+            background-color: #0288d1;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0277bd;
+        }
+
+        .cancel-button {
+            background-color: #e57373;
+        }
+
+        .cancel-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
 </head>
 <body>
+
+<div class="form-container">
     <h1>Editar Nota</h1>
-    
     <form action="{{ url_for('notes.actualizar_nota', id=nota.id) }}" method="POST">
         <label for="titulo">Título:</label>
         <input type="text" id="titulo" name="titulo" value="{{ nota.titulo }}" required>
-        
+
         <label for="contenido">Contenido:</label>
         <textarea id="contenido" name="contenido" required>{{ nota.contenido }}</textarea>
-        
-        <button type="submit">Guardar cambios</button>
-    </form>
 
-    <a href="{{ url_for('notes.notes_list') }}">Volver a la lista de notas</a>
+        <div class="button-container">
+            <button type="submit">Guardar cambios</button>
+            <button type="button" class="cancel-button" onclick="window.location.href='{{ url_for('notes.notes_list') }}';">Cancelar</button>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>
