@@ -22,9 +22,9 @@ class FiltrosTareas:
         }
 
 
-def get_task(id):
+def get_task(id, id_usuario):
     try:
-        task = TasksModel.query.filter(TasksModel.id == id).first()
+        task = TasksModel.query.filter(TasksModel.id == id, TasksModel.id_usuario == id_usuario).first()
         if task is None:
             raise Exception("Tarea no encontrada")
         return task, None
@@ -39,9 +39,9 @@ def get_tasks_all():
     except Exception as e:
         return None, f"Error al obtener las tareas: {e}"
 
-def get_tasks_completadas_paginado(page, per_page):
+def get_tasks_completadas_paginado(page, per_page, id_usuario):
     try:
-        tasks_page = TasksModel.query.filter(TasksModel.completada == True).paginate(
+        tasks_page = TasksModel.query.filter(TasksModel.completada == True, TasksModel.id_usuario == id_usuario).paginate(
             page=page, per_page=per_page, error_out=False
         )
         return tasks_page, None
@@ -49,19 +49,18 @@ def get_tasks_completadas_paginado(page, per_page):
         return None, f"Error al obtener las tareas completadas: {e}"
 
 
-def get_tasks_sin_completar_paginado(page, per_page):
+def get_tasks_sin_completar_paginado(page, per_page, id_usuario):
     try:
-        tasks_page = TasksModel.query.filter(TasksModel.completada == False).paginate(
+        tasks_page = TasksModel.query.filter(TasksModel.completada == False, TasksModel.id_usuario == id_usuario).paginate(
             page=page, per_page=per_page, error_out=False
         )
         return tasks_page, None
     except Exception as e:
         return None, f"Error al obtener las tareas sin completar: {e}"
 
-
-def get_tasks_paginado(page, per_page):
+def get_tasks_paginado(page, per_page, id_usuario):
     try:
-        tasks_page = TasksModel.query.paginate(
+        tasks_page = TasksModel.query.filter(TasksModel.id_usuario == id_usuario).paginate(
             page=page, per_page=per_page, error_out=False
         )
         return tasks_page, None
@@ -135,11 +134,11 @@ def upd_task(id, data):
         return None, f"Error al actualizar la tarea: {e}"
 
 
-def del_task(id):
+def del_task(id, id_usuario):
     try:
-        task = TasksModel.query.filter(TasksModel.id == id).first()
+        task = TasksModel.query.filter(TasksModel.id == id, TasksModel.id_usuario == id_usuario).first()
         if task is None:
-            raise Exception("Tarea no encontrada")
+            raise Exception("Tarea no encontrada o no pertenece al usuario")
 
         db.session.delete(task)
         db.session.commit()
