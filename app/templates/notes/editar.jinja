@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h1 class="text-center mb-4">Editar Nota</h1>
-            <div class="card">
+            <div class="card bg-light">
                 <div class="card-body">
                     <form method="POST" action="{{ url_for('notes.actualizar_nota', id=nota.id) }}">
                         {{ form.hidden_tag() }}
