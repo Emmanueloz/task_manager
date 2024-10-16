@@ -21,6 +21,9 @@ def create_app():
     app.register_blueprint(auth)
     app.register_blueprint(events_bp)
 
+    from app.features.notes import notes
+    app.register_blueprint(notes)
+
     from app.features.tasks import tasks
     app.register_blueprint(tasks)
 

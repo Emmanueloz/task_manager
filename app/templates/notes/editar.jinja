@@ -1,0 +1,67 @@
+{% extends "base.jinja" %}
+
+{% block title %}Editar Nota{% endblock title %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h1 class="text-center mb-4">Editar Nota</h1>
+
+            <!-- Mostrar mensajes flash -->
+            {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <div class="alert alert-success">
+                  {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+
+            <div class="card bg-light">
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('notes.actualizar_nota', id=nota.id) }}">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Campo para el Título -->
+                        <div class="form-group">
+                            <label for="titulo">Título</label>
+                            {{ form.titulo(class_='form-control') }}
+                            {% if form.titulo.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.titulo.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Campo para el Contenido -->
+                        <div class="form-group">
+                            <label for="contenido">Contenido</label>
+                            {{ form.contenido(class_='form-control') }}
+                            {% if form.contenido.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.contenido.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <!-- Botón de Guardar Cambios -->
+                            {{ form.submit(class_='btn btn-primary') }}
+
+                            <!-- Botón de Cancelar -->
+                            <a href="{{ url_for('notes.notes_list') }}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
