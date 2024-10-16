@@ -1,0 +1,167 @@
+{% extends "base.jinja" %}
+
+{% block title %}
+Mis Tareas
+{% endblock title %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+{% endblock styles %}
+
+{% block body %}
+
+<body class="bg-light">
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-dark">Mis Tareas</h2>
+            <button class="btn btn-primary" onclick="window.location.href='{{ url_for('TaskRoute.create') }}'">Nueva
+                Tarea</button>
+        </div>
+        <ul class="nav nav-tabs mb-4" id="taskTabs">
+            <li class="nav-item">
+                <a class="nav-link {% if filtro == 'todos' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='todos') }}">Todos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if filtro == 'completados' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='completados') }}">Completadas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if filtro == 'sin_completar' %}active{% endif %}"
+                    href="{{ url_for('TaskRoute.index', filtro='sin_completar') }}">Sin Completar</a>
+            </li>
+        </ul>
+
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="allTasks">
+                <div class="list-group">
+                    {% for task in all_tasks %}
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">{{ task.nombre }}
+                                    {% if task.prioridad == 'alta' %}
+                                    <span class="badge bg-danger">Alta</span>
+                                    {% elif task.prioridad == 'media' %}
+                                    <span class="badge bg-warning text-dark">Media</span>
+                                    {% elif task.prioridad == 'baja' %}
+                                    <span class="badge bg-success">Baja</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
+                            </div>
+                        </div>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Opciones
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('TaskRoute.edit', task_id=task.id) }}">Editar</a></li>
+                                <li><a class="dropdown-item"
+                                        href="{{ url_for('TaskRoute.get_eliminar', id=task.id) }}">Eliminar</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!--es la seccion de Completadas -->
+            <div class="tab-pane fade" id="completedTasks">
+                <div class="list-group">
+                    {% for task in all_tasks if task.completada %}
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">{{ task.nombre }}</div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!--seccion de  No Completadas -->
+            <div class="tab-pane fade" id="uncompletedTasks">
+                <div class="list-group">
+                    {% for task in all_tasks if not task.completada %}
+                    <div
+                        class="list-group-item d-flex justify-content-between align-items-start border-0 rounded mb-2 p-3 bg-white shadow-sm">
+                        <div class="form-check me-3">
+                            <form action="{{ url_for('TaskRoute.toggle_task', task_id=task.id) }}" method="post">
+                                <input class="form-check-input" type="checkbox" name="completada" value="1" {% if
+                                    task.completada %}checked{% endif %} onchange="this.form.submit();">
+                            </form>
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">{{ task.nombre }}</div>
+                                <small class="text-muted">{{ task.descripcion }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination para cada secion -->
+        {% if tasks_page %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if tasks_page.has_prev %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('TaskRoute.index', page=tasks_page.prev_num, filtro=filtro) }}"
+                        aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+
+                {% for num in tasks_page.iter_pages() %}
+                <li class="page-item {% if num == tasks_page.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('TaskRoute.index', page=num, filtro=filtro) }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if tasks_page.has_next %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('TaskRoute.index', page=tasks_page.next_num, filtro=filtro) }}"
+                        aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        {% endif %}
+    </div>
+    {% endblock body %}
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {% endblock scripts %}
