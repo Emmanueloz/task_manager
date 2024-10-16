@@ -1,10 +1,26 @@
-{% extends "base.jinja" %} {% block title %} Iniciar sesión {% endblock title %}
+{% extends "base.jinja" %}
+
+{% block title %} Registrarse {% endblock title %}
+
 
 {% block body %}
 <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
     <form class="col-12 col-md-10 col-lg-6 col-xl-4 p-4 p-lg-5  border border-secondary rounded-5" method="post">
         {{ form.csrf_token}}
-        <h2 class="text-center fs-4">Iniciar sesión</h2>
+        <h2 class="text-center fs-4">Registrarse</h2>
+        <div class="mb-3 ">
+            {{form.username.label(class="form-label")}}
+            {{ form.username(class="form-control",value=form.username.data if form.username.data else "",
+            placeholder="example") }}
+            {% if form.username.errors %}
+            <div class="text-danger">
+                {% for error in form.username.errors %}
+                <small>{{ error }}</small>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
         <div class="mb-3">
             {{form.email.label(class="form-label")}}
             {{ form.email(class="form-control",value=form.email.data if form.email.data else "",
@@ -28,7 +44,7 @@
             </div>
             {% endif %}
         </div>
-        <a href="/register" class="">Registrarse</a>
+        <a href="/login" class="">Iniciar sesión</a>
         <div class="d-flex mt-3 justify-content-between">
             <a href="/" class="btn btn-outline-secondary">Cancelar</a>
             <button type="submit" class="btn btn-primary">Iniciar</button>
