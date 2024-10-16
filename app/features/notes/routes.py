@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.features.notes.model import Nota
 from app.db import db
 from app.features.notes.forms import NotaForm 
@@ -28,6 +28,7 @@ def guardar_note():
         nueva_nota = Nota(titulo=form.titulo.data, contenido=form.contenido.data, usuario_id=current_user.id)
         db.session.add(nueva_nota)
         db.session.commit()
+        flash('Nota creada con éxito.', 'success')  # Mensaje de éxito
         return redirect(url_for('notes.notes_list'))
     return render_template('notes/crear.jinja', form=form) 
 
@@ -48,6 +49,7 @@ def actualizar_nota(id):
         nota.titulo = form.titulo.data
         nota.contenido = form.contenido.data
         db.session.commit()
+        flash('Nota actualizada con éxito.', 'success')  # Mensaje de éxito
         return redirect(url_for('notes.notes_list'))
     return render_template('notes/editar.jinja', form=form, nota=nota)
 
@@ -57,4 +59,5 @@ def eliminar_nota(id):
     nota = Nota.query.filter_by(id=id, usuario_id=current_user.id).first()
     db.session.delete(nota)
     db.session.commit()
+    flash('Nota eliminada con éxito.', 'success')  # Mensaje de éxito
     return redirect(url_for('notes.notes_list'))
