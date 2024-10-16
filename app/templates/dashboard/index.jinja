@@ -29,64 +29,59 @@
     </div>
 
     <!-- Card 2: Tareas Pendientes -->
-    <div class="col-md-6">
-      <div class="card rounded-card">
-        <div class="card-header">
-          Tareas Pendientes
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Tarea 1</h5>
-          <p class="card-text">Descripción de la tarea pendiente.</p>
-          <a href="#" class="btn btn-primary">Completar</a>
-        </div>
-      </div>
+<div class="col-md-6">
+  <div class="card rounded-card">
+    <div class="card-header">
+      Tareas Pendientes
+    </div>
+    <div class="card-body">
+      {% if tasks %}
+        {% for task in tasks %}
+          <h5 class="card-title">{{ task.nombre }}</h5>
+          <p class="card-text">{{ task.descripcion }}</p>
+          <a href="{{ url_for('TaskRoute.index') }}" class="btn btn-primary">Ver más</a>
+        {% endfor %}
+      {% else %}
+        <p>No hay tareas pendientes en este momento.</p>
+      {% endif %}
     </div>
   </div>
+</div>
 
   <!-- Card 3: Notas Recientes con contenedor de más cards -->
-  <div class="row mt-4">
+<div class="row mt-4">
     <div class="col-12">
-      <div class="card rounded-card">
-        <div class="card-header">
-          Notas Recientes
+        <div class="card rounded-card">
+            <div class="card-header">
+                Notas Recientes
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if notas %}
+                        {% for nota in notas %}
+                        <div class="col-md-4">
+                            <div class="card mb-3 rounded-card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ nota.titulo }}</h5>
+                                    <p class="card-text">{{ nota.contenido[:100] }}...</p> <!-- Mostrar solo los primeros 100 caracteres de la nota -->
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No hay notas disponibles en este momento.</p>
+                    {% endif %}
+                </div>
+                <!-- Botón Ver más para ver todas las notas -->
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('notes.notes_list') }}" class="btn btn-primary">Ver más</a>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <!-- Sub-card 1 -->
-            <div class="col-md-4">
-              <div class="card mb-3 rounded-card">
-                <div class="card-body">
-                  <h5 class="card-title">Nota 1</h5>
-                  <p class="card-text">Descripción de la primera nota.</p>
-                  <a href="#" class="btn btn-secondary">Leer más</a>
-                </div>
-              </div>
-            </div>
-            <!-- Sub-card 2 -->
-            <div class="col-md-4">
-              <div class="card mb-3 rounded-card">
-                <div class="card-body">
-                  <h5 class="card-title">Nota 2</h5>
-                  <p class="card-text">Descripción de la segunda nota.</p>
-                  <a href="#" class="btn btn-secondary">Leer más</a>
-                </div>
-              </div>
-            </div>
-            <!-- Sub-card 3 -->
-            <div class="col-md-4">
-              <div class="card mb-3 rounded-card">
-                <div class="card-body">
-                  <h5 class="card-title">Nota 3</h5>
-                  <p class="card-text">Descripción de la tercera nota.</p>
-                  <a href="#" class="btn btn-secondary">Leer más</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
+
+
 
 </div>
 {% endblock body %}
