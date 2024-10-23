@@ -19,69 +19,77 @@
           Próximos Eventos
         </div>
         <div class="card-body">
-          {% for evento in eventos %}
-          <h5 class="card-title">{{ evento.titulo }}</h5>
-          <p class="card-text">{{ evento.descripcion }}</p>
-         <a href="{{ url_for('events.list_events') }}" class="btn btn-primary">Ver más</a>
-          {% endfor %}
+          {% if eventos %}
+            {% for evento in eventos %}
+              <h5 class="card-title">{{ evento.titulo }}</h5>
+              <p class="card-text">{{ evento.descripcion }}</p>
+              <p class="card-text">Fecha: {{ evento.fecha.strftime('%d/%m/%Y') }} Hora: {{ evento.hora.strftime('%H:%M') }}</p>
+            {% endfor %}
+          {% else %}
+            <p>No hay eventos próximos en este momento.</p>
+          {% endif %}
+        </div>
+        <div class="text-center mt-3">
+          <a href="{{ url_for('events.list_events') }}" class="btn btn-primary">Ver más</a>
         </div>
       </div>
     </div>
 
     <!-- Card 2: Tareas Pendientes -->
-<div class="col-md-6">
-  <div class="card rounded-card">
-    <div class="card-header">
-      Tareas Pendientes
-    </div>
-    <div class="card-body">
-      {% if tasks %}
-        {% for task in tasks %}
-          <h5 class="card-title">{{ task.nombre }}</h5>
-          <p class="card-text">{{ task.descripcion }}</p>
+    <div class="col-md-6">
+      <div class="card rounded-card">
+        <div class="card-header">
+          Tareas Pendientes
+        </div>
+        <div class="card-body">
+          {% if tasks %}
+            {% for task in tasks %}
+              <h5 class="card-title">{{ task.nombre }}</h5>
+              <p class="card-text">{{ task.descripcion }}</p>
+            {% endfor %}
+          {% else %}
+            <p>No hay tareas pendientes en este momento.</p>
+          {% endif %}
+        </div>
+        <div class="text-center mt-3">
           <a href="{{ url_for('TaskRoute.index') }}" class="btn btn-primary">Ver más</a>
-        {% endfor %}
-      {% else %}
-        <p>No hay tareas pendientes en este momento.</p>
-      {% endif %}
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-  <!-- Card 3: Notas Recientes con contenedor de más cards -->
-<div class="row mt-4">
+  <!-- Card 3: Notas Recientes -->
+  <div class="row mt-4">
     <div class="col-12">
-        <div class="card rounded-card">
-            <div class="card-header">
-                Notas Recientes
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    {% if notas %}
-                        {% for nota in notas %}
-                        <div class="col-md-4">
-                            <div class="card mb-3 rounded-card">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ nota.titulo }}</h5>
-                                    <p class="card-text">{{ nota.contenido[:100] }}...</p> <!-- Mostrar solo los primeros 100 caracteres de la nota -->
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <p>No hay notas disponibles en este momento.</p>
-                    {% endif %}
-                </div>
-                <!-- Botón Ver más para ver todas las notas -->
-                <div class="text-center mt-3">
-                    <a href="{{ url_for('notes.notes_list') }}" class="btn btn-primary">Ver más</a>
-                </div>
-            </div>
+      <div class="card rounded-card">
+        <div class="card-header">
+          Notas Recientes
         </div>
+        <div class="card-body">
+          <div class="row">
+            {% if notas %}
+              {% for nota in notas %}
+                <div class="col-md-4">
+                  <div class="card mb-3 rounded-card">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ nota.titulo }}</h5>
+                      <p class="card-text">{{ nota.contenido[:100] }}...</p> <!-- Mostrar solo los primeros 100 caracteres de la nota -->
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p>No hay notas disponibles en este momento.</p>
+            {% endif %}
+          </div>
+          <!-- Botón Ver más para ver todas las notas -->
+          <div class="text-center mt-3">
+            <a href="{{ url_for('notes.notes_list') }}" class="btn btn-primary">Ver más</a>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-
-
+  </div>
 
 </div>
 {% endblock body %}
